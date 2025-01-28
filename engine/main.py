@@ -14,15 +14,25 @@ def speak(text):
 
 def command():
     r = sr.Recognizer()
-    with sr.Microphone as source:
+    with sr.Microphone() as source:
         print("Listening....")
         r.pause_threshold = 1
         r.adjust_for_ambient_noise(source)
 
         audio = r.listen(source, 10, 6)
 
+    try:
+        print("recognizing")
+        query = r.recognize_google(audio, language="en-in")
+        print(f"user said: {query}")
+    except Exception as e:
+        return ""  
 
-speak("Hello, I am your virtual assistant!")
+    return query.lower()
+
+text = command()
+
+speak(text)
 
 
 
